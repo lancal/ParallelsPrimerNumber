@@ -2,25 +2,58 @@ package com.company;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+
+/**
+ *
+ * @author Alan Calderon
+ *
+ */
 
 public class Main {
 
-    private static final long UPPER_BOUND = 1000000;
+    /**
+     *
+     * Constante de limite superior de numeros.
+     *
+     */
 
-    private static final int NTHREADS = Runtime.getRuntime().availableProcessors();
+    private static final long UPPER_BOUND = 1000 * 1000;
 
-    public static void main(String[] args) {
+    /**
+     *
+     * Constante de Numero de hilos.
+     *
+     */
 
-        long now = System.currentTimeMillis();
+    private static final int NTHREADS = 2;
 
-        ExecutorService service = Executors.newFixedThreadPool(NTHREADS);
+    /**
+     *
+     * Constante de tiempo maximo de espera
+     *
+     */
+    private static final int MAXTIME = 120;
 
-        for(long i=2;i <= UPPER_BOUND;i++) {
+    public static void main(String[] args) throws InterruptedException {
 
-            service.submit(new IsPrime(i));
-        }
+        long parallelTimeT1 = 0;
+
+        for(int cantThreads = 1; cantThreads <=  NTHREADS; cantThreads++) {
+
+            long now = System.currentTimeMillis();
+
+            ExecutorService service = Executors.newFixedThreadPool(NTHREADS);
+
+            for(int i = 2;i <= UPPER_BOUND;i++) {
+
+                service.submit(new isPrime(i));
+
+            }
 
         service.shutdown();
+        service.awaitTermination(MAXTIME, TimeUnit.HOURS);
 
         if (service.isTerminated()){
 
@@ -30,10 +63,19 @@ public class Main {
 
             System.out.println("Finished in " + seconds + " seconds");
 
-            long speedup = (seconds / NTHREADS);
+            long parallelTime = endTime;
 
-            System.out.println("Speed-Up: "+speedup+" seconds/tasks");
+            if (cantThreads == 1) {
 
+                parallelTimeT1 = parallelTime;
+
+            }
+
+            long speedup = parallelTimeT1 / parallelTime;
+
+            System.out.println("Speed-Up: "+ speedup + " seconds/tasks");
+
+            }
         }
 
     }

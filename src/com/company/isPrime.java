@@ -1,19 +1,29 @@
 package com.company;
 
-public class IsPrime implements Runnable {
+import java.util.concurrent.atomic.AtomicInteger;
 
-    long value;//the number observed
 
-    public IsPrime(long value)
+
+public class isPrime implements Runnable {
+
+    private static final AtomicInteger PRIME = new AtomicInteger(0) ;
+
+    long value;
+
+    public isPrime(long value)
     {
-        this.value=value;
+        this.value = value;
     }
 
     @Override
-    public void run()
-    {
+    public void run() {
+
         boolean result = isAPrimeNumber();
-        if(result) System.out.println("Is Prime: [" + this.value + "]");
+
+        if(result) {
+
+            PRIME.accumulateAndGet();
+        }
 
     }
 
@@ -28,9 +38,5 @@ public class IsPrime implements Runnable {
 
         return true;
     }
-
-
-
-
 
 }
