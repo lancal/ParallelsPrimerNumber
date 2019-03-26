@@ -20,10 +20,10 @@ public class isPrime implements Runnable {
 
         boolean result = isAPrimeNumber();
 
-        if(result) {
-
-            PRIME.accumulateAndGet();
-        }
+//        if(result) {
+//
+//            PRIME.accumulateAndGet();
+//        }
 
     }
 
