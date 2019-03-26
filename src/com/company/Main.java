@@ -1,6 +1,5 @@
 package com.company;
 
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,17 +22,19 @@ public class Main {
 
         service.shutdown();
 
-        long endTime = System.currentTimeMillis()-now;
+        if (service.isTerminated()){
 
-        long seconds = (endTime / 1000);
+            long endTime = System.currentTimeMillis() - now;
 
-        System.out.println("Finished in " + seconds + " seconds");
+            long seconds = (endTime / 1000);
 
-        long speedup = (seconds / NTHREADS);
+            System.out.println("Finished in " + seconds + " seconds");
 
-        System.out.println("Speed-Up: "+speedup+" seconds/tasks");
+            long speedup = (seconds / NTHREADS);
 
+            System.out.println("Speed-Up: "+speedup+" seconds/tasks");
 
+        }
 
     }
 }

@@ -2,7 +2,6 @@ package com.company;
 
 public class IsPrime implements Runnable {
 
-
     long value;//the number observed
 
     public IsPrime(long value)
@@ -26,8 +25,6 @@ public class IsPrime implements Runnable {
         {
             if(this.value%i==0) return false;
         }
-
-
 
         return true;
     }
