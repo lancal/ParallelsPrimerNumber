@@ -19,7 +19,7 @@ public class Main {
      *
      */
 
-    private static final long UPPER_BOUND = 1000 * 1000;
+    private static final long UPPER_BOUND = 600 * 1000;
 
     /**
      *
@@ -27,7 +27,7 @@ public class Main {
      *
      */
 
-    private static final int NTHREADS = 2;
+    private static final int NTHREADS = 4;
 
     /**
      *
@@ -36,46 +36,68 @@ public class Main {
      */
     private static final int MAXTIME = 120;
 
+    public static boolean isAPrimeNumber(long value) {
+
+        if(value==1 || value==2) {
+
+            return true;
+
+        }
+
+        if(value%2L==0) {
+
+            return false;
+
+        }
+
+        for(long i=3; i<= value / 2; ++i) {
+
+            if(value%i==0) return false;
+
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) throws InterruptedException {
 
-        long parallelTimeT1 = 0;
+        for (int primeNumbers=(100*1000); primeNumbers <= UPPER_BOUND; primeNumbers += (100*1000)) {
 
-        for(int cantThreads = 1; cantThreads <=  NTHREADS; cantThreads++) {
+            double parallelTimeT1 = 0;
 
-            long now = System.currentTimeMillis();
+            System.out.println("Cantidad limite: " + primeNumbers);
 
-            ExecutorService service = Executors.newFixedThreadPool(NTHREADS);
+            for (int cantThreads = 1; cantThreads <= NTHREADS; cantThreads++) {
 
-            for(int i = 2;i <= UPPER_BOUND;i++) {
+                long now = System.currentTimeMillis();
 
-                service.submit(new isPrime(i));
+                ExecutorService service = Executors.newFixedThreadPool(NTHREADS);
 
-            }
+                for (int i = 2; i <= primeNumbers; i++) {
 
-        service.shutdown();
-        service.awaitTermination(MAXTIME, TimeUnit.HOURS);
+                    service.submit(new isPrime(i));
 
-        if (service.isTerminated()){
+                }
 
-            long endTime = System.currentTimeMillis() - now;
+                service.shutdown();
+                service.awaitTermination(MAXTIME, TimeUnit.HOURS);
 
-            long seconds = (endTime / 1000);
+                long endTime = System.currentTimeMillis() - now;
 
-            System.out.println("Finished in " + seconds + " seconds");
+                double parallelTime = (double) endTime;
 
-            long parallelTime = endTime;
+                if (cantThreads == 1) {
 
-            if (cantThreads == 1) {
+                    parallelTimeT1 = parallelTime;
 
-                parallelTimeT1 = parallelTime;
+                }
 
-            }
+                double speedup = (double) parallelTimeT1 / parallelTime;
 
-            long speedup = parallelTimeT1 / parallelTime;
-
-            System.out.println("Speed-Up: "+ speedup + " seconds/tasks");
+                System.out.println("Hilos " + cantThreads + " Tiempo: " + parallelTime + " milisegundo Speed-Up: " + speedup + " segundos por hilos");
 
             }
+
         }
 
     }
