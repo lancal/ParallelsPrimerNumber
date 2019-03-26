@@ -18,7 +18,7 @@ public class IsPrime implements Runnable {
     {
         if(value==1 || value==2) return true;
         if(value%2L==0) return false;
-        for(long i=3;i< value;++i)
+        for(long i=3;i<= value / 2;++i)
         {
             if(this.value%i==0) return false;
         }
