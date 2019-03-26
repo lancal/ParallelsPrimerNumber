@@ -14,7 +14,7 @@ public class IsPrime implements Runnable {
     public void run()
     {
         boolean result = isAPrimeNumber();
-        if(result) System.out.println("Is Prime: ["+this.value+"]");
+        if(result) System.out.println("Is Prime: [" + this.value + "]");
 
     }
 

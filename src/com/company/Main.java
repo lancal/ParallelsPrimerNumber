@@ -16,8 +16,8 @@ public class Main {
 
         ExecutorService service = Executors.newFixedThreadPool(NTHREADS);
 
-        for(long i=2;i <= UPPER_BOUND;i++)
-        {
+        for(long i=2;i <= UPPER_BOUND;i++) {
+
             service.submit(new IsPrime(i));
         }
 
