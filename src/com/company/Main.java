@@ -27,7 +27,7 @@ public class Main {
      *
      */
 
-    private static final int NTHREADS = 4;
+    private static final int NTHREADS = 16;
 
     /**
      *
@@ -38,25 +38,36 @@ public class Main {
 
     public static boolean isAPrimeNumber(long value) {
 
-        if(value==1 || value==2) {
+//        if(value==1 || value==2) {
+//
+//            return true;
+//
+//        }
+//
+//        if(value%2L==0) {
+//
+//            return false;
+//
+//        }
+//
+//        for(long i=3; i<= value; ++i) {
+//
+//            if(value%i==0) return false;
+//
+//        }
+//
+//        return true;
 
-            return true;
-
+        int remainder;
+        for (int i = 2; i <= value ; i++) {
+            remainder = (int) (value % i);
+            //if remainder is 0 than numberToCheckber is not prime and break loop. Elese continue loop
+            if (remainder == 0) {
+                return false;
+            }
         }
-
-        if(value%2L==0) {
-
-            return false;
-
-        }
-
-        for(long i=3; i<= value / 2; ++i) {
-
-            if(value%i==0) return false;
-
-        }
-
         return true;
+
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -71,7 +82,7 @@ public class Main {
 
                 long now = System.currentTimeMillis();
 
-                ExecutorService service = Executors.newFixedThreadPool(NTHREADS);
+                ExecutorService service = Executors.newFixedThreadPool(cantThreads);
 
                 for (int i = 2; i <= primeNumbers; i++) {
 
@@ -80,7 +91,7 @@ public class Main {
                 }
 
                 service.shutdown();
-                service.awaitTermination(MAXTIME, TimeUnit.HOURS);
+                service.awaitTermination(MAXTIME, TimeUnit.SECONDS);
 
                 long endTime = System.currentTimeMillis() - now;
 
@@ -92,7 +103,7 @@ public class Main {
 
                 }
 
-                double speedup = (double) parallelTimeT1 / parallelTime;
+                double speedup = parallelTimeT1 / parallelTime;
 
                 System.out.println("Hilos " + cantThreads + " Tiempo: " + parallelTime + " milisegundo Speed-Up: " + speedup + " segundos por hilos");
 
